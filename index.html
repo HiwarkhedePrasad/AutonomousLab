@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LAB — Project Directory</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =====================
+       TOP BAR
+  ===================== -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <span class="topbar__wordmark">LAB</span>
+      <span class="topbar__slash">/</span>
+      <span class="topbar__subtitle">project vault</span>
+    </div>
+    <div class="topbar__controls">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
+          placeholder="Search projects..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+      <button class="btn-add" id="btn-add-project" aria-label="Add new project">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        New Project
+      </button>
+    </div>
+  </header>
+
+  <!-- =====================
+       LAYOUT SHELL
+  ===================== -->
+  <div class="layout">
+
+    <!-- =====================
+         SIDEBAR
+    ===================== -->
+    <aside class="sidebar" id="sidebar">
+
+      <!-- Sort -->
+      <section class="sidebar__section">
+        <h3 class="sidebar__heading">Sort By</h3>
+        <div class="filter-group" id="sort-group">
+          <button class="filter-btn active" data-sort="updated">Recently Updated</button>
+          <button class="filter-btn" data-sort="priority">Highest Priority</button>
+          <button class="filter-btn" data-sort="complexity">Complexity</button>
+        </div>
+      </section>
+
+      <!-- Domain Filters -->
+      <section class="sidebar__section">
+        <h3 class="sidebar__heading">Domain</h3>
+        <div class="filter-group" id="domain-group">
+          <button class="filter-btn active" data-domain="all">All</button>
+          <button class="filter-btn" data-domain="MCP / Agents">MCP / Agents</button>
+          <button class="filter-btn" data-domain="Robotics">Robotics</button>
+          <button class="filter-btn" data-domain="Electronics">Electronics</button>
+          <button class="filter-btn" data-domain="AI / ML">AI / ML</button>
+          <button class="filter-btn" data-domain="Cybersecurity">Cybersecurity</button>
+          <button class="filter-btn" data-domain="Hardware">Hardware</button>
+          <button class="filter-btn" data-domain="Research">Research</button>
+          <button class="filter-btn" data-domain="Business">Business</button>
+          <button class="filter-btn" data-domain="Experimental">Experimental</button>
+          <button class="filter-btn" data-domain="Non-Technical">Non-Technical</button>
+        </div>
+      </section>
+
+      <!-- Status Filters -->
+      <section class="sidebar__section">
+        <h3 class="sidebar__heading">Status</h3>
+        <div class="filter-group" id="status-group">
+          <button class="filter-btn active" data-status="all">All</button>
+          <button class="filter-btn" data-status="Idea">Idea</button>
+          <button class="filter-btn" data-status="Researching">Researching</button>
+          <button class="filter-btn" data-status="Building">Building</button>
+          <button class="filter-btn" data-status="Paused">Paused</button>
+          <button class="filter-btn" data-status="Archived">Archived</button>
+        </div>
+      </section>
+
+      <!-- Priority Filters -->
+      <section class="sidebar__section">
+        <h3 class="sidebar__heading">Priority</h3>
+        <div class="filter-group" id="priority-group">
+          <button class="filter-btn active" data-priority="all">All</button>
+          <button class="filter-btn" data-priority="Critical">Critical</button>
+          <button class="filter-btn" data-priority="High">High</button>
+          <button class="filter-btn" data-priority="Medium">Medium</button>
+          <button class="filter-btn" data-priority="Low">Low</button>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- =====================
+         MAIN CONTENT
+    ===================== -->
+    <main class="main" id="main-content">
+
+      <!-- Results meta bar -->
+      <div class="results-bar">
+        <span class="results-count" id="results-count">— projects</span>
+        <button class="clear-filters-btn" id="clear-filters" aria-label="Clear all filters">
+          Clear filters
+        </button>
+      </div>
+
+      <!-- Project Grid -->
+      <div class="project-grid" id="project-grid"></div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="empty-state" aria-live="polite" hidden>
+        <div class="empty-state__icon" aria-hidden="true">⌀</div>
+        <p class="empty-state__heading">No projects found</p>
+        <p class="empty-state__body">Adjust your filters or search query.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- =====================
+       ADD / EDIT MODAL
+  ===================== -->
+  <div class="modal-backdrop" id="modal-backdrop" hidden aria-modal="true" role="dialog" aria-labelledby="modal-title">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modal-title">New Project</h2>
+        <button class="modal__close" id="modal-close" aria-label="Close modal">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal__body">
+        <div class="field-row">
+          <label class="field-label" for="field-title">Title</label>
+          <input class="field-input" type="text" id="field-title" placeholder="Project name" />
+        </div>
+
+        <div class="field-row">
+          <label class="field-label" for="field-description">Description</label>
+          <textarea class="field-input field-textarea" id="field-description" placeholder="Brief description..." rows="3"></textarea>
+        </div>
+
+        <div class="field-row-grid">
+          <div class="field-row">
+            <label class="field-label" for="field-domain">Domain</label>
+            <select class="field-input field-select" id="field-domain">
+              <option value="MCP / Agents">MCP / Agents</option>
+              <option value="Robotics">Robotics</option>
+              <option value="Electronics">Electronics</option>
+              <option value="AI / ML">AI / ML</option>
+              <option value="Cybersecurity">Cybersecurity</option>
+              <option value="Hardware">Hardware</option>
+              <option value="Research">Research</option>
+              <option value="Business">Business</option>
+              <option value="Experimental">Experimental</option>
+              <option value="Non-Technical">Non-Technical</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label class="field-label" for="field-status">Status</label>
+            <select class="field-input field-select" id="field-status">
+              <option value="Idea">Idea</option>
+              <option value="Researching">Researching</option>
+              <option value="Building">Building</option>
+              <option value="Paused">Paused</option>
+              <option value="Archived">Archived</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label class="field-label" for="field-priority">Priority</label>
+            <select class="field-input field-select" id="field-priority">
+              <option value="Critical">Critical</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label class="field-label" for="field-complexity">Complexity</label>
+            <select class="field-input field-select" id="field-complexity">
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal__footer">
+        <button class="btn-ghost" id="modal-cancel">Cancel</button>
+        <button class="btn-primary" id="modal-save">Save Project</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
